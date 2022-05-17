@@ -25,12 +25,10 @@ namespace CardThemeLib
             instance = this;
             var harmony = new Harmony(ModId);
             harmony.PatchAll();
-            CardThemeColor[] cardThemeColors = CardChoice.instance.cardThemes.ToArray();
-            string[] cardThemeNames = new string[] { "DestructiveRed", "FirepowerYellow", "DefensiveBlue", "TechWhite", "EvilPurple", "PoisonGreen", "NatureBrown", "ColdBlue", "MagicPink" };
-            for (int i = 0; i < cardThemeColors.Length; i++)
-            {
-                CreateOrGetType(cardThemeNames[i], cardThemeColors[i]);
-            }
+            List<CardThemeColor> cardThemeColors = CardChoice.instance.cardThemes.ToList();
+            cardThemeColors.ForEach(theme => {
+                CreateOrGetType(theme.themeType.ToString(), theme);
+            });
 
         }
 

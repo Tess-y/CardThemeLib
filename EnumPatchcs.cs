@@ -34,7 +34,8 @@ namespace CardThemeLib
         {
             if (__instance.GetType() == typeof(CardThemeColor.CardThemeColorType))
             {
-                __result = CardThemeLib.instance.themes.Keys.ToList().Find(k => CardThemeLib.instance.themes[k].themeType == (CardThemeColor.CardThemeColorType)__instance);
+               var t = CardThemeLib.instance.themes.Keys.ToList().Find(k => CardThemeLib.instance.themes[k].themeType == (CardThemeColor.CardThemeColorType)__instance);
+                __result = t!=null? t:__result;
             }
         }
     }
