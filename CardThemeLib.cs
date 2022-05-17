@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using HarmonyLib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,11 +26,17 @@ namespace CardThemeLib
             instance = this;
             var harmony = new Harmony(ModId);
             harmony.PatchAll();
+            
+        }
+        void Start()
+        { 
             List<CardThemeColor> cardThemeColors = CardChoice.instance.cardThemes.ToList();
             cardThemeColors.ForEach(theme => {
-                CreateOrGetType(theme.themeType.ToString(), theme);
+                themes.Add(theme.themeType.ToString(), theme);
             });
-
+            cardThemeColors = themes.Values.ToList();
+            cardThemeColors.Sort((t1, t2) => t1.themeType.CompareTo(t2.themeType));
+            CardChoice.instance.cardThemes = cardThemeColors.ToArray();
         }
 
         public CardThemeColor.CardThemeColorType CreateOrGetType(string name, CardThemeColor themeColor = null)
@@ -37,10 +44,9 @@ namespace CardThemeLib
             if (themes.ContainsKey(name)) return themes[name].themeType;
             else
             {
-                CardThemeColor.CardThemeColorType themeType = (CardThemeColor.CardThemeColorType)themes.Count;
+                CardThemeColor.CardThemeColorType themeType = (CardThemeColor.CardThemeColorType)themes.Count+9;
                 themeColor.themeType = themeType;
                 themes.Add(name, themeColor);
-                CardChoice.instance.cardThemes = themes.Values.ToArray();
                 return themeType;
             }
         }
