@@ -41,6 +41,7 @@ namespace CardThemeLib
 
         public CardThemeColor.CardThemeColorType CreateOrGetType(string name, CardThemeColor themeColor = null)
         {
+            name = name.Replace(" ","");
             if (themes.ContainsKey(name)) return themes[name].themeType;
             else
             {
