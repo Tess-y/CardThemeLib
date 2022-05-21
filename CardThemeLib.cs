@@ -15,8 +15,9 @@ namespace CardThemeLib
     {
         private const string ModId = "root.cardtheme.lib";
         private const string ModName = "Card Theme Extention Library";
-        public const string Version = "1.0.0";
+        public const string Version = "1.0.1";
         internal Dictionary<string, CardThemeColor> themes = new Dictionary<string, CardThemeColor>();
+        internal bool firstRun = true;
         public IReadOnlyDictionary<string, CardThemeColor> Themes { get { return themes; } }
 
         public static CardThemeLib instance { get; private set; }
@@ -28,12 +29,18 @@ namespace CardThemeLib
             harmony.PatchAll();
             
         }
-        void Start()
-        { 
-            List<CardThemeColor> cardThemeColors = CardChoice.instance.cardThemes.ToList();
-            cardThemeColors.ForEach(theme => {
-                themes.Add(theme.themeType.ToString(), theme);
-            });
+        public void SetUpThemes()
+        {
+            List<CardThemeColor> cardThemeColors;
+            if (firstRun)
+            {
+                cardThemeColors = CardChoice.instance.cardThemes.ToList();
+                cardThemeColors.ForEach(theme =>
+                {
+                    themes.Add(theme.themeType.ToString(), theme);
+                });
+                firstRun = false;
+            }
             cardThemeColors = themes.Values.ToList();
             cardThemeColors.Sort((t1, t2) => t1.themeType.CompareTo(t2.themeType));
             CardChoice.instance.cardThemes = cardThemeColors.ToArray();
