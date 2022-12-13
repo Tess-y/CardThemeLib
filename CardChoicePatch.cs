@@ -6,7 +6,7 @@ using System.Text;
 namespace CardThemeLib
 {
     [Serializable]
-    [HarmonyPatch(typeof(CardChoice), "Awake")]
+    [HarmonyPatch(typeof(CardChoice), "Start")]
     internal class CardChoicePatch
     {
         public static void Postfix()

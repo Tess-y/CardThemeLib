@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace CardThemeLib
 {
@@ -15,7 +16,7 @@ namespace CardThemeLib
     {
         private const string ModId = "root.cardtheme.lib";
         private const string ModName = "Card Theme Extention Library";
-        public const string Version = "1.0.1";
+        public const string Version = "1.1.0";
         internal Dictionary<string, CardThemeColor> themes = new Dictionary<string, CardThemeColor>();
         internal bool firstRun = true;
         public IReadOnlyDictionary<string, CardThemeColor> Themes { get { return themes; } }
@@ -39,6 +40,13 @@ namespace CardThemeLib
                 {
                     themes.Add(theme.themeType.ToString(), theme);
                 });
+
+                var allObjects = (ThemeAdder[]) Resources.FindObjectsOfTypeAll(typeof(ThemeAdder));
+                foreach (var o in allObjects)
+                {
+                    o.SetUp();
+                }
+               
                 firstRun = false;
             }
             cardThemeColors = themes.Values.ToList();
