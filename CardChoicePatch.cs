@@ -1,17 +1,15 @@
 ﻿using HarmonyLib;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CardThemeLib
 {
     [Serializable]
-    [HarmonyPatch(typeof(CardChoice), "Start")]
+    [HarmonyPatch(typeof(CardChoice), "Awake")]
     internal class CardChoicePatch
     {
         public static void Postfix()
         {
-            CardThemeLib.instance.SetUpThemes();
+            CardThemeLib.instance.StartCoroutine(CardThemeLib.instance.SetUpThemes());
         }
     }
 }

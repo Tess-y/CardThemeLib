@@ -12,11 +12,11 @@ namespace CardThemeLib
     [BepInPlugin(ModId, ModName, Version)]
     // The game our Mod Is associated with
     [BepInProcess("Rounds.exe")]
-    public class CardThemeLib : BaseUnityPlugin
+    public class CardThemeLib : BaseUnityPlugin 
     {
         private const string ModId = "root.cardtheme.lib";
         private const string ModName = "Card Theme Extention Library";
-        public const string Version = "1.1.0";
+        public const string Version = "1.1.2";
         internal Dictionary<string, CardThemeColor> themes = new Dictionary<string, CardThemeColor>();
         internal bool firstRun = true;
         public IReadOnlyDictionary<string, CardThemeColor> Themes { get { return themes; } }
@@ -30,8 +30,9 @@ namespace CardThemeLib
             harmony.PatchAll();
             
         }
-        public void SetUpThemes()
+        public IEnumerator SetUpThemes()
         {
+            for(int _ = 0; _<5; _++) yield return null;
             List<CardThemeColor> cardThemeColors;
             if (firstRun)
             {
@@ -44,7 +45,8 @@ namespace CardThemeLib
                 var allObjects = (ThemeAdder[]) Resources.FindObjectsOfTypeAll(typeof(ThemeAdder));
                 foreach (var o in allObjects)
                 {
-                    o.SetUp();
+                    if(o.enabled)
+                        o.SetUp();
                 }
                
                 firstRun = false;
